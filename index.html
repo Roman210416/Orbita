@@ -3,10 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Orbita Mobile</title>
+<title>Orbita – magazin online de smartphone-uri în Moldova</title>
+<meta name="description" content="Orbita – magazin online de smartphone-uri în Moldova: iPhone, Samsung Galaxy și Xiaomi noi, cu garanție 24 de luni, livrare gratuită și rate 0%.">
+<meta property="og:title" content="Orbita – magazin online de smartphone-uri în Moldova">
+<meta property="og:description" content="iPhone, Samsung și Xiaomi noi, garanție 24 de luni, livrare gratuită în toată Moldova.">
+<meta property="og:type" content="website">
+
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;600;800&display=swap" media="print" onload="this.media='all'">
 <style>
 html,body{margin:0}
 [hidden]{display:none!important}
@@ -26,10 +32,10 @@ html{background:var(--bg)}
 body{background:radial-gradient(1200px 700px at 85% -10%,#10594E 0%,transparent 60%),linear-gradient(180deg,var(--bg2),var(--bg) 600px);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;min-height:100vh;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:#0A302A}
 .orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.orbs i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45;animation:drift 22s ease-in-out infinite alternate}
-.orbs i:nth-child(1){width:420px;height:420px;background:var(--coral);top:8%;left:-120px}
-.orbs i:nth-child(2){width:380px;height:380px;background:var(--cyan);top:45%;right:-140px;animation-delay:-6s}
-.orbs i:nth-child(3){width:300px;height:300px;background:var(--lime);bottom:-80px;left:35%;opacity:.28;animation-delay:-12s}
+.orbs i{position:absolute;border-radius:50%;opacity:.45;animation:drift 22s ease-in-out infinite alternate;will-change:transform}
+.orbs i:nth-child(1){width:520px;height:520px;background:radial-gradient(circle,var(--coral),transparent 65%);top:8%;left:-120px}
+.orbs i:nth-child(2){width:480px;height:480px;background:radial-gradient(circle,var(--cyan),transparent 65%);top:45%;right:-140px;animation-delay:-6s}
+.orbs i:nth-child(3){width:400px;height:400px;background:radial-gradient(circle,var(--lime),transparent 65%);bottom:-80px;left:35%;opacity:.28;animation-delay:-12s}
 @keyframes drift{to{transform:translate(60px,-40px) scale(1.15)}}
 .wrap{max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));position:relative;z-index:1}
 button{font:inherit;color:inherit;cursor:pointer}
@@ -88,7 +94,7 @@ header.bar .wrap{display:flex;align-items:center;gap:16px;padding-block:12px}
 .card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.4)}
 .stage{background:radial-gradient(circle at 50% 45%,var(--tint,#EEF3EF) 0%,var(--tint2,#F7F4EC) 75%);aspect-ratio:1/1;position:relative;cursor:pointer;display:grid;place-items:center;border:0;padding:0;width:100%}
 .ph{display:block;background-repeat:no-repeat}
-.stage .ph{width:88%;height:88%;transition:transform .35s ease;filter:drop-shadow(0 14px 18px rgba(0,0,0,.18))}
+.stage .ph{width:88%;height:88%;object-fit:contain;transition:transform .35s ease;filter:drop-shadow(0 14px 18px rgba(0,0,0,.18))}
 .card:hover .stage .ph{transform:scale(1.05) rotate(-1deg)}
 .badge{position:absolute;top:12px;left:12px;background:var(--coral);color:#fff;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:999px;z-index:1}
 .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
@@ -366,7 +372,7 @@ function swatches(p, onPick){
 }
 function card(p){
   const s=sel(p); const el=document.createElement('article'); el.className='card';
-  const stage = p.photos ? ph(p,0,s.c) : `<div class="nophoto"><b>${BRANDS[p.brand]}</b>Foto în curând</div>`;
+  const stage = p.photos ? `<img class="ph" src="img/t/${p.id}.webp" alt="${BRANDS[p.brand]} ${p.name}" width="340" height="340" loading="lazy" decoding="async">` : `<div class="nophoto"><b>${BRANDS[p.brand]}</b>Foto în curând</div>`;
   el.innerHTML = `<button class="stage" style="${tint(p,s.c)}" aria-label="Detalii ${p.name}">${p.badge?`<span class="badge">${p.badge}</span>`:''}${stage}</button>
   <div class="body"><div class="sw-slot"></div>
   <h3 class="name">${BRANDS[p.brand]==='Apple'?'Apple ':BRANDS[p.brand]==='Samsung'?'Samsung ':''}${p.name}</h3>
@@ -479,7 +485,7 @@ function renderCart(){
   if(!cart.length){ items.innerHTML='<p class="empty">Coșul e gol. Alege un telefon și apasă „În coș”.</p>'; foot.innerHTML=''; return; }
   let total=0;
   items.innerHTML = cart.map((i,k)=>{ const p=DATA.find(x=>x.id===i.id); const pr=p.variants[i.v].price; total+=pr*i.q;
-    return `<div class="it">${p.photos?ph(p,0,i.c,"cimg"):'<span></span>'}<div><div class="t">${p.name}</div><div class="s">${p.variants[i.v].storage} · ${p.photos?p.colors[i.c].name:''} · ${fmt(pr)}</div></div>
+    return `<div class="it">${p.photos?`<img class="cimg" src="img/t/${p.id}.webp" alt="" width="60" height="60" loading="lazy">`:'<span></span>'}<div><div class="t">${p.name}</div><div class="s">${p.variants[i.v].storage} · ${p.photos?p.colors[i.c].name:''} · ${fmt(pr)}</div></div>
     <div class="qty"><button data-k="${k}" data-d="-1" aria-label="Scade">−</button><span>${i.q}</span><button data-k="${k}" data-d="1" aria-label="Adaugă">+</button></div></div>`; }).join('');
   items.querySelectorAll('.qty button').forEach(b=>b.onclick=()=>{ const it=cart[+b.dataset.k]; it.q+=+b.dataset.d; if(it.q<=0) cart.splice(+b.dataset.k,1); saveCart(); renderCart(); });
   foot.innerHTML = `<div class="total"><span>Total</span><span>${fmt(total)}</span></div>
