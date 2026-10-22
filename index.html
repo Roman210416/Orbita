@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Orbita Mobile</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+html,body{margin:0}
+[hidden]{display:none!important}
+/* Layout: glowing emerald night backdrop with drifting colour orbs; glass header; bold display hero;
+   brand tiles in their own colours; bright product cards whose stage tints to the chosen colourway. */
+:root{
+  --bg:#06231F; --bg2:#0B3A33; --ink:#F4FFF9; --muted:#A9CCC2; --line:rgba(255,255,255,.12);
+  --card:#FFFDF8; --card-ink:#10201B; --card-muted:#5B6B65; --card-line:#E6E2D8;
+  --coral:#FF5C46; --amber:#FFB01F; --lime:#B8F02A; --cyan:#19D3F0; --violet:#9B5BFF;
+  --accent:#FF5C46; --accent-ink:#FFFFFF;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Manrope","Segoe UI",system-ui,sans-serif;
+  --r:18px; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{background:radial-gradient(1200px 700px at 85% -10%,#10594E 0%,transparent 60%),linear-gradient(180deg,var(--bg2),var(--bg) 600px);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:#0A302A}
+.orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orbs i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45;animation:drift 22s ease-in-out infinite alternate}
+.orbs i:nth-child(1){width:420px;height:420px;background:var(--coral);top:8%;left:-120px}
+.orbs i:nth-child(2){width:380px;height:380px;background:var(--cyan);top:45%;right:-140px;animation-delay:-6s}
+.orbs i:nth-child(3){width:300px;height:300px;background:var(--lime);bottom:-80px;left:35%;opacity:.28;animation-delay:-12s}
+@keyframes drift{to{transform:translate(60px,-40px) scale(1.15)}}
+.wrap{max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));position:relative;z-index:1}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.topline{background:linear-gradient(90deg,var(--coral),var(--amber));color:#2A0E05;font-size:12.5px;font-weight:700;position:relative;z-index:2}
+header.bar .topline .wrap{padding-block:7px}
+.topline .wrap{display:flex;gap:18px;flex-wrap:wrap;justify-content:space-between;padding-block:7px}
+header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(6,35,31,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+header.bar .wrap{display:flex;align-items:center;gap:16px;padding-block:12px}
+.logo{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.02em;display:flex;align-items:center;gap:9px;white-space:nowrap}
+.logo i{width:24px;height:24px;border-radius:50%;border:3px solid var(--lime);position:relative;display:inline-block;animation:spin 8s linear infinite}
+.logo i::after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:var(--coral);top:-6px;right:-3px;box-shadow:0 0 10px var(--coral)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.search{flex:1;min-width:0;position:relative}
+.search input{width:100%;padding:11px 14px 11px 40px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--ink);font:inherit}
+.search input::placeholder{color:var(--muted)}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.7}
+.cartbtn{display:flex;align-items:center;gap:8px;background:var(--lime);color:#14200A;border:0;border-radius:999px;padding:10px 16px;font-weight:800;white-space:nowrap;box-shadow:0 6px 24px rgba(184,240,42,.35)}
+.cartbtn b{background:#14200A;color:var(--lime);border-radius:999px;min-width:22px;height:22px;display:inline-grid;place-items:center;font-size:12px;padding:0 6px}
+
+.hero{padding-block:40px 10px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px;align-items:center}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,60px);line-height:1.02;letter-spacing:-.035em;margin:0;text-wrap:balance}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--coral),var(--amber) 40%,var(--lime) 80%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);max-width:52ch;margin:16px 0 0;font-size:16px}
+.chipsrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.chipsrow span{border:1px solid var(--line);background:rgba(255,255,255,.06);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700}
+.heroart{position:relative;aspect-ratio:1/1;max-width:420px;justify-self:center;width:100%}
+.heroart .ring{position:absolute;inset:6%;border-radius:50%;border:2px dashed rgba(255,255,255,.18);animation:spin 40s linear infinite}
+.heroart .ring.r2{inset:20%;border:2px solid rgba(184,240,42,.35);animation-duration:25s;animation-direction:reverse}
+.heroart .ph{position:absolute;inset:8%;filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))}
+.brands{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:26px 0 6px}
+.brand{border:0;border-radius:var(--r);padding:16px 18px;text-align:left;display:flex;flex-direction:column;gap:2px;transition:transform .2s,box-shadow .2s;color:#fff;position:relative;overflow:hidden}
+.brand::after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;right:-40px;bottom:-60px;background:rgba(255,255,255,.18)}
+.brand[data-b="all"]{background:linear-gradient(135deg,#1F6B5E,#0E3F38)}
+.brand[data-b="apple"]{background:linear-gradient(135deg,#FF5C46,#C2185B)}
+.brand[data-b="samsung"]{background:linear-gradient(135deg,#2E6BFF,#1A2FA8)}
+.brand[data-b="xiaomi"]{background:linear-gradient(135deg,#FF9A1F,#E8540C)}
+.brand:hover{transform:translateY(-3px)}
+.brand .n{font-family:var(--display);font-weight:600;font-size:18px}
+.brand .c{opacity:.85;font-size:13px}
+.brand[aria-pressed="true"]{box-shadow:0 0 0 3px var(--lime),0 12px 30px rgba(0,0,0,.35)}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:14px 16px;margin-top:18px;border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.05)}
+.toolbar .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--amber);color:#2A1700;border-color:var(--amber)}
+.toolbar select{font:inherit;padding:7px 10px;border-radius:10px;border:1px solid var(--line);background:#0B3A33;color:var(--ink)}
+.count{margin-left:auto;color:var(--muted);font-size:13px;font-weight:700}
+
+.group{padding-top:34px}
+.group h2{font-family:var(--display);font-weight:600;font-size:22px;margin:0 0 14px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.group h2::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--gc,var(--coral));box-shadow:0 0 14px var(--gc,var(--coral));align-self:center}
+.group h2 small{font-family:var(--body);font-size:13px;color:var(--muted);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{background:var(--card);color:var(--card-ink);border-radius:var(--r);display:flex;flex-direction:column;overflow:hidden;min-width:0;box-shadow:0 14px 40px rgba(0,0,0,.28);transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.stage{background:radial-gradient(circle at 50% 45%,var(--tint,#EEF3EF) 0%,var(--tint2,#F7F4EC) 75%);aspect-ratio:1/1;position:relative;cursor:pointer;display:grid;place-items:center;border:0;padding:0;width:100%}
+.ph{display:block;background-repeat:no-repeat}
+.stage .ph{width:88%;height:88%;transition:transform .35s ease;filter:drop-shadow(0 14px 18px rgba(0,0,0,.18))}
+.card:hover .stage .ph{transform:scale(1.05) rotate(-1deg)}
+.badge{position:absolute;top:12px;left:12px;background:var(--coral);color:#fff;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:999px;z-index:1}
+.body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.swatches{display:flex;gap:7px;align-items:center}
+.sw{width:22px;height:22px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 1px var(--card-line);padding:0}
+.sw[aria-pressed="true"]{box-shadow:0 0 0 2px var(--card-ink)}
+.swname{font-size:12px;color:var(--card-muted);margin-left:2px;font-weight:700}
+.name{font-weight:800;font-size:16.5px;line-height:1.25;margin:0;cursor:pointer}
+.spec{font-size:12.5px;color:var(--card-muted);font-variant-numeric:tabular-nums}
+.desc{font-size:13px;color:var(--card-muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.stor{display:flex;gap:5px;flex-wrap:wrap}
+.st{border:1px solid var(--card-line);background:transparent;border-radius:8px;padding:4px 8px;font-size:12px;font-weight:800;color:var(--card-ink)}
+.st[aria-pressed="true"]{border-color:var(--card-ink);background:var(--card-ink);color:var(--card)}
+.buy{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-top:auto;padding-top:8px;border-top:1px dashed var(--card-line)}
+.price{font-family:var(--display);font-weight:700;font-size:20px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rate{font-size:12px;color:var(--card-muted)}
+.add{border:0;background:var(--coral);color:#fff;border-radius:12px;padding:10px 14px;font-weight:800;font-size:13px;white-space:nowrap;box-shadow:0 6px 18px rgba(255,92,70,.35)}
+.nophoto{color:var(--card-muted);font-size:13px;text-align:center;padding:20px}
+
+/* sheet */
+.overlay{position:fixed;inset:0;background:rgba(2,14,12,.7);backdrop-filter:blur(6px);z-index:50;display:grid;place-items:center;padding:16px}
+.sheet{background:var(--card);color:var(--card-ink);border-radius:24px;width:min(1060px,100%);max-height:calc(100dvh - 32px);overflow:auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);position:relative}
+.sheet .close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:0;background:var(--card-ink);color:var(--card);z-index:2;font-size:16px}
+.gal{background:radial-gradient(circle at 50% 40%,var(--tint,#EEF3EF),var(--tint2,#F7F4EC) 80%);padding:24px;display:flex;flex-direction:column;gap:12px}
+.gal .main{aspect-ratio:1/1;display:grid;place-items:center}
+.gal .main .ph{width:100%;height:100%;filter:drop-shadow(0 20px 26px rgba(0,0,0,.2))}
+.thumbs{display:flex;gap:8px;overflow-x:auto}
+.thumbs button{width:64px;height:64px;flex:none;border-radius:12px;border:1px solid var(--card-line);background:var(--card);padding:4px}
+.thumbs button[aria-pressed="true"]{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral)}
+.thumbs .ph{width:100%;height:100%}
+.info{padding:30px 28px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.info h3{font-family:var(--display);font-size:28px;line-height:1.08;margin:0;letter-spacing:-.02em}
+.info .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--coral);font-weight:800}
+.info p{margin:0;color:var(--card-muted)}
+.specs{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:14px;border-top:1px solid var(--card-line);padding-top:12px}
+.specs dt{color:var(--card-muted)}
+.specs dd{margin:0;font-weight:700}
+.big{font-family:var(--display);font-size:32px;font-weight:700}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.cta{border:0;background:var(--coral);color:#fff;border-radius:14px;padding:14px 22px;font-weight:800;font-size:15px;box-shadow:0 8px 22px rgba(255,92,70,.35)}
+
+/* cart */
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--card);color:var(--card-ink);z-index:60;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px);box-shadow:-20px 0 60px rgba(0,0,0,.4)}
+.drawer header{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--card-line)}
+.drawer h4{font-family:var(--display);margin:0;font-size:18px}
+.drawer .chip{color:var(--card-ink);border-color:var(--card-line)}
+.items{flex:1;overflow:auto;padding:8px 18px}
+.it{display:grid;grid-template-columns:60px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--card-line)}
+.it .cimg{width:60px;height:60px;background-color:#F1EEE6;border-radius:12px}
+.it .t{font-weight:800;font-size:14px}
+.it .s{font-size:12px;color:var(--card-muted)}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:26px;height:26px;border-radius:8px;border:1px solid var(--card-line);background:transparent;color:var(--card-ink)}
+.foot{padding:16px 18px;border-top:1px solid var(--card-line);display:flex;flex-direction:column;gap:10px}
+.foot form{display:grid;gap:8px}
+.foot input{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--card-line);background:#F6F3EC;color:var(--card-ink)}
+.total{display:flex;justify-content:space-between;font-weight:800;font-size:17px}
+.empty{color:var(--card-muted);padding:30px 0;text-align:center}
+#list .empty{color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--lime);color:#14200A;padding:11px 18px;border-radius:14px;font-weight:800;z-index:80;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+footer{margin-top:56px;border-top:1px solid var(--line);background:rgba(0,0,0,.18);position:relative;z-index:1}
+footer .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;padding-block:30px;font-size:14px;color:var(--muted)}
+footer b{color:var(--ink);display:block;margin-bottom:4px}
+@media (max-width:860px){ .hero{grid-template-columns:1fr} .heroart{max-width:300px} }
+@media (max-width:760px){
+  .sheet{grid-template-columns:1fr}
+  .brands{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cartbtn span{display:none}
+  .logo{font-size:17px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .body{padding:10px}
+  .price{font-size:16px}
+  .add{padding:8px 10px}
+  .buy{flex-direction:column;align-items:stretch}
+  .desc{display:none}
+  .count{margin-left:0}
+}
+.shop{display:grid;grid-template-columns:180px minmax(0,1fr);gap:24px;align-items:start}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 90px);display:flex;flex-direction:column;gap:10px;padding-top:34px}
+.sbtn{border:0;border-radius:14px;padding:14px 16px;color:#fff;font-family:var(--display);font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;text-align:left;transition:transform .2s,box-shadow .2s}
+.sbtn small{font-family:var(--body);font-size:12px;font-weight:800;background:rgba(255,255,255,.22);border-radius:999px;padding:2px 8px}
+.sbtn[data-b="apple"]{background:linear-gradient(135deg,#FF5C46,#C2185B)}
+.sbtn[data-b="samsung"]{background:linear-gradient(135deg,#2E6BFF,#1A2FA8)}
+.sbtn[data-b="xiaomi"]{background:linear-gradient(135deg,#FF9A1F,#E8540C)}
+.sbtn:hover{transform:translateX(3px)}
+.sbtn[aria-pressed="true"]{box-shadow:0 0 0 3px var(--lime),0 10px 26px rgba(0,0,0,.35)}
+@media (max-width:760px){.shop{grid-template-columns:1fr;gap:0}.side{position:static;flex-direction:row;padding-top:16px}.sbtn{flex:1;padding:12px;font-size:14px}}
+.flink,.tlink{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.flink{display:block;margin:3px 0;color:var(--ink)}
+.tlink{font-weight:800}
+.info{background:var(--card);color:var(--card-ink);border-radius:24px;width:min(760px,100%);max-height:calc(100dvh - 32px);overflow:auto;position:relative;padding:34px 34px 28px}
+.info .close{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:0;background:var(--card-ink);color:var(--card);font-size:16px}
+.info h3{font-family:var(--display);font-size:26px;margin:0 50px 6px 0;letter-spacing:-.02em}
+.info .lead{color:var(--card-muted);margin:0 0 18px}
+.info h4{font-size:16px;margin:18px 0 4px}
+.info ul{margin-top:2px}
+.info p,.info li{color:#33413B;font-size:14.5px;line-height:1.6;max-width:65ch}
+.info ul{margin:6px 0;padding-left:20px}
+.info .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 18px}
+.info .tabs button{border:1px solid var(--card-line);background:transparent;border-radius:999px;padding:6px 12px;font-weight:800;font-size:13px;color:var(--card-ink)}
+.info .tabs button[aria-pressed="true"]{background:var(--card-ink);color:var(--card);border-color:var(--card-ink)}
+.info .note{background:#F3EFE6;border-radius:12px;padding:12px 14px;font-size:13.5px;color:#33413B;margin-top:18px}
+@media (max-width:760px){.info{padding:26px 20px}.topline .wrap>span:nth-child(2),.topline .wrap>span:nth-child(3){display:none}.topline .wrap{gap:4px 12px!important;font-size:11.5px}}
+.cbfab{position:fixed;left:calc(18px + env(safe-area-inset-left,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:13px 18px;background:var(--lime);color:#14200A;font-weight:800;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.4);animation:cbpulse 2.4s ease-in-out infinite}
+@keyframes cbpulse{0%,100%{box-shadow:0 10px 30px rgba(0,0,0,.4),0 0 0 0 rgba(184,240,42,.55)}50%{box-shadow:0 10px 30px rgba(0,0,0,.4),0 0 0 12px rgba(184,240,42,0)}}
+.cb{background:var(--card);color:var(--card-ink);border-radius:24px;width:min(440px,100%);padding:30px 28px 26px;position:relative}
+.cb .close{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:0;background:var(--card-ink);color:var(--card);font-size:15px}
+.cb h3{font-family:var(--display);font-size:24px;line-height:1.1;margin:0 44px 8px 0}
+.cb p{color:var(--card-muted);margin:0 0 16px;font-size:14.5px}
+.cb form{display:grid;gap:10px}
+.cb label{font-size:13px;font-weight:800}
+.cb input{font:inherit;font-size:17px;padding:13px 14px;border-radius:12px;border:1px solid var(--card-line);background:#F6F3EC;color:var(--card-ink);font-variant-numeric:tabular-nums}
+.cb .err{color:#C0392B;font-size:13px;font-weight:700;min-height:1em}
+.cb .ok{text-align:center;padding:10px 0}
+.cb .ok b{display:block;font-family:var(--display);font-size:20px;margin-bottom:6px}
+.callback{margin-top:40px;border-radius:var(--r);background:linear-gradient(135deg,rgba(184,240,42,.16),rgba(25,211,240,.10));border:1px solid var(--line);padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.callback h3{font-family:var(--display);margin:0;font-size:20px}
+.callback p{margin:4px 0 0;color:var(--muted)}
+.callback .cta{background:var(--lime);color:#14200A;box-shadow:none}
+@media (max-width:760px){.cbfab span{display:none}.cbfab{padding:14px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+
+<div class="orbs" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="bar"><div class="topline"><div class="wrap"><span><button class="tlink" data-info="livrare">Livrare</button> · <button class="tlink" data-info="retur">Retur</button> · <button class="tlink" data-info="garantie">Garanție</button></span><span>Livrare gratuită în toată Moldova · Rate 0% până la 12 luni</span><span>Lun–Vin 09:00–20:00 · Sâm–Dum 09:00–17:00</span><span>Gmail: salutorbita@gmail.com</span></div></div><div class="wrap">
+  <div class="logo"><i></i>Orbita</div>
+  <label class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Caută modelul: iPhone 17, Galaxy A57, Redmi Note…" aria-label="Caută"></label>
+  <button class="cartbtn" id="openCart"><span>Coș</span><b id="cartCount">0</b></button>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <h1><em>Orbita</em> – magazin online de smartphone-uri în Moldova</h1>
+      <p>Apple, Samsung, Xiaomi</p>
+      <div class="chipsrow"><span>57 de modele</span><span>Garanție 24 luni</span><span>Rate 0% · 12 luni</span><span>Livrare gratuită</span></div>
+    </div>
+    <div class="heroart" aria-hidden="true"><div class="ring"></div><div class="ring r2"></div><span class="ph" id="heroPh"></span></div>
+  </section>
+  <div class="brands" id="brands"></div>
+  <div class="toolbar">
+    <span class="lbl">Memorie</span><div class="chips" id="mem"></div>
+    <span class="lbl">Sortează</span>
+    <select id="sort" aria-label="Sortează"><option value="model">După model (nou → vechi)</option><option value="old">După model (vechi → nou)</option><option value="asc">Preț crescător</option><option value="desc">Preț descrescător</option></select>
+    <span class="count" id="count"></span>
+  </div>
+  <div id="list"></div>
+  <section class="callback"><div><h3>Nu știi ce telefon să alegi?</h3><p>Scrie-ne numărul tău de telefon și te sunăm noi, gratuit.</p></div><button class="cta" data-cb>Vă sunăm noi</button></section>
+</main>
+
+<footer><div class="wrap">
+  <div><b>Orbita Mobile</b>Magazin online de telefoane. Chișinău, Republica Moldova.</div>
+  <div><b>Livrare</b>Gratuită în toată țara, 1–2 zile lucrătoare. Ridicare din magazin în aceeași zi.</div>
+  <div><b>Garanție</b>24 de luni pentru toate telefoanele noi. Retur în 14 zile.</div>
+  <div><b>Contact</b>Gmail: salutorbita@gmail.com</div>
+  <div><b>Informații</b><button class="flink" data-info="livrare">Livrare</button><button class="flink" data-info="retur">Politica de retur</button><button class="flink" data-info="garantie">Condiții de garanție</button></div>
+</div></footer>
+
+<div class="overlay" id="ov" hidden></div>
+<aside class="drawer" id="drawer" hidden aria-label="Coș">
+  <header><h4>Coșul tău</h4><button class="chip" id="closeCart">Închide</button></header>
+  <div class="items" id="items"></div>
+  <div class="foot" id="foot"></div>
+</aside>
+<button class="cbfab" id="cbOpen" aria-label="Vă sunăm noi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span>Vă sunăm noi</span></button>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const DATA = [{"id": "apple-iphone-duo", "order": 0, "brand": "apple", "name": "iPhone Duo", "form": "fold", "display": "7.8\" + 5.5\" OLED", "chip": "A20 Pro", "camera": "48 MP", "battery": "4800 mAh", "ram": "12 GB", "desc": "Primul iPhone pliabil: se deschide într-o tabletă mică pentru filme, documente și două aplicații alăturate. Închis, încape în buzunar ca un telefon obișnuit.", "badge": "Nou", "verified": false, "variants": [{"storage": "512 GB", "price": 40999}, {"storage": "1 TB", "price": 45999}, {"storage": "2 TB", "price": 53999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-18-pro-max", "order": 1, "brand": "apple", "name": "iPhone 18 Pro Max", "form": "slab", "display": "6.9\" ProMotion 120 Hz", "chip": "A20 Pro", "camera": "48 MP ×3", "battery": "5000 mAh", "ram": "12 GB", "desc": "Cel mai mare ecran și cea mai lungă autonomie din gama Pro. Trei camere de 48 MP, zoom optic 5× și filmare 4K la 120 de cadre.", "badge": "Nou", "verified": true, "variants": [{"storage": "256 GB", "price": 36099}, {"storage": "512 GB", "price": 41399}, {"storage": "1 TB", "price": 51699}, {"storage": "2 TB", "price": 66399}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-18-pro", "order": 2, "brand": "apple", "name": "iPhone 18 Pro", "form": "slab", "display": "6.3\" ProMotion 120 Hz", "chip": "A20 Pro", "camera": "48 MP ×3", "battery": "4200 mAh", "ram": "12 GB", "desc": "Toate camerele Pro într-un format compact. Cip A20 Pro, rame din aluminiu și ecran care coboară la 1 Hz ca să economisească bateria.", "badge": "Nou", "verified": true, "variants": [{"storage": "256 GB", "price": 32899}, {"storage": "512 GB", "price": 38799}, {"storage": "1 TB", "price": 48999}, {"storage": "2 TB", "price": 63299}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-17-pro-max", "order": 3, "brand": "apple", "name": "iPhone 17 Pro Max", "form": "slab", "display": "6.9\" ProMotion 120 Hz", "chip": "A19 Pro", "camera": "48 MP ×3", "battery": "4832 mAh", "ram": "12 GB", "desc": "Corp din aluminiu cu cameră de vapori pentru răcire, deci performanță stabilă în jocuri lungi. Zoom optic 8× și autonomie de o zi și jumătate.", "badge": null, "verified": true, "variants": [{"storage": "256 GB", "price": 31099}, {"storage": "512 GB", "price": 36299}, {"storage": "1 TB", "price": 40899}, {"storage": "2 TB", "price": 48599}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-17-pro", "order": 4, "brand": "apple", "name": "iPhone 17 Pro", "form": "slab", "display": "6.3\" ProMotion 120 Hz", "chip": "A19 Pro", "camera": "48 MP ×3", "battery": "3988 mAh", "ram": "12 GB", "desc": "Camerele Pro Max într-un telefon care se ține ușor cu o mână. Ideal pentru video: ProRes, Log și microfoane de studio.", "badge": null, "verified": true, "variants": [{"storage": "256 GB", "price": 27999}, {"storage": "512 GB", "price": 32799}, {"storage": "1 TB", "price": 35799}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-air", "order": 5, "brand": "apple", "name": "iPhone Air", "form": "slab", "display": "6.5\" ProMotion 120 Hz", "chip": "A19 Pro", "camera": "48 MP", "battery": "3149 mAh", "ram": "12 GB", "desc": "Cel mai subțire iPhone, de doar 5,6 mm, cu titan și sticlă Ceramic Shield pe ambele fețe. Pentru cine vrea un telefon mare care aproape nu se simte în mână.", "badge": null, "verified": true, "variants": [{"storage": "256 GB", "price": 21299}, {"storage": "512 GB", "price": 25899}, {"storage": "1 TB", "price": 30499}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-17", "order": 6, "brand": "apple", "name": "iPhone 17", "form": "slab", "display": "6.3\" ProMotion 120 Hz", "chip": "A19", "camera": "48 MP ×2", "battery": "3692 mAh", "ram": "8 GB", "desc": "Pentru prima dată ecran de 120 Hz pe modelul de bază și 256 GB din start. Cameră frontală pătrată care face selfie-uri orizontale fără să rotești telefonul.", "badge": null, "verified": true, "variants": [{"storage": "256 GB", "price": 20399}, {"storage": "512 GB", "price": 25399}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-17e", "order": 7, "brand": "apple", "name": "iPhone 17e", "form": "slab", "display": "6.1\" OLED", "chip": "A19", "camera": "48 MP", "battery": "4005 mAh", "ram": "8 GB", "desc": "Cel mai accesibil iPhone din generația 17. Același cip A19, Face ID și Apple Intelligence, la un preț mai mic.", "badge": null, "verified": true, "variants": [{"storage": "256 GB", "price": 15999}, {"storage": "512 GB", "price": 20399}], "photos": 3, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-16-plus", "order": 8, "brand": "apple", "name": "iPhone 16 Plus", "form": "slab", "display": "6.7\" OLED", "chip": "A18", "camera": "48 MP ×2", "battery": "4674 mAh", "ram": "8 GB", "desc": "Ecran mare și una dintre cele mai bune autonomii din istoria iPhone. Butonul Camera Control deschide camera dintr-o singură apăsare.", "badge": null, "verified": true, "variants": [{"storage": "128 GB", "price": 20399}, {"storage": "256 GB", "price": 22699}, {"storage": "512 GB", "price": 27699}], "photos": 2, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-16", "order": 9, "brand": "apple", "name": "iPhone 16", "form": "slab", "display": "6.1\" OLED", "chip": "A18", "camera": "48 MP ×2", "battery": "3561 mAh", "ram": "8 GB", "desc": "Format compact, buton de acțiune și Camera Control. Camere aliniate vertical care filmează video spațial.", "badge": null, "verified": true, "variants": [{"storage": "128 GB", "price": 17399}, {"storage": "256 GB", "price": 19099}, {"storage": "512 GB", "price": 22999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-15-plus", "order": 10, "brand": "apple", "name": "iPhone 15 Plus", "form": "slab", "display": "6.7\" OLED", "chip": "A16 Bionic", "camera": "48 MP ×2", "battery": "4383 mAh", "ram": "6 GB", "desc": "Dynamic Island, port USB-C și spate din sticlă mată colorată. Spațiu de 512 GB pentru ani de poze și video.", "badge": null, "verified": true, "variants": [{"storage": "128 GB", "price": 17699}, {"storage": "256 GB", "price": 19999}, {"storage": "512 GB", "price": 24999}], "photos": 4, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-15", "order": 11, "brand": "apple", "name": "iPhone 15", "form": "slab", "display": "6.1\" OLED", "chip": "A16 Bionic", "camera": "48 MP ×2", "battery": "3349 mAh", "ram": "6 GB", "desc": "Primul iPhone de bază cu Dynamic Island și cameră de 48 MP. O alegere sigură la un preț bun.", "badge": null, "verified": true, "variants": [{"storage": "128 GB", "price": 15199}, {"storage": "256 GB", "price": 16799}, {"storage": "512 GB", "price": 20999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-14-pro-max", "order": 12, "brand": "apple", "name": "iPhone 14 Pro Max", "form": "slab", "display": "6.7\" ProMotion 120 Hz", "chip": "A16 Bionic", "camera": "48 MP ×3", "battery": "4323 mAh", "ram": "6 GB", "desc": "Ecran Always-On, oțel inoxidabil și trei camere Pro. Flagship-ul care încă ține pasul cu modelele noi.", "badge": null, "verified": false, "variants": [{"storage": "128 GB", "price": 14999}], "photos": 4, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-14-plus", "order": 13, "brand": "apple", "name": "iPhone 14 Plus", "form": "slab", "display": "6.7\" OLED", "chip": "A15 Bionic", "camera": "12 MP ×2", "battery": "4325 mAh", "ram": "6 GB", "desc": "Ecran mare la preț de model de bază. Baterie care ține fără probleme o zi întreagă.", "badge": null, "verified": false, "variants": [{"storage": "256 GB", "price": 12999}, {"storage": "512 GB", "price": 14999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "apple-iphone-13-pro-max", "order": 14, "brand": "apple", "name": "iPhone 13 Pro Max", "form": "slab", "display": "6.7\" ProMotion 120 Hz", "chip": "A15 Bionic", "camera": "12 MP ×3", "battery": "4352 mAh", "ram": "6 GB", "desc": "Primul iPhone cu ProMotion 120 Hz și mod Cinematic. Clasic, robust și cu baterie foarte bună.", "badge": null, "verified": false, "variants": [{"storage": "128 GB", "price": 11999}, {"storage": "256 GB", "price": 12999}, {"storage": "1 TB", "price": 15999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-fold8-ultra", "order": 15, "brand": "samsung", "name": "Galaxy Fold8 Ultra", "form": "fold", "display": "8.2\" + 6.5\" AMOLED", "chip": "Snapdragon 8 Elite Gen 5", "camera": "200 MP", "battery": "5000 mAh", "ram": "16 GB", "desc": "Cel mai subțire pliabil Samsung, cu cameră principală de 200 MP și ecran interior de 8,2 inci. Lucrezi cu trei aplicații deodată, ca pe o tabletă.", "badge": "Nou", "verified": true, "variants": [{"storage": "256 GB", "price": 40899}, {"storage": "512 GB", "price": 45399}, {"storage": "1 TB", "price": 54399}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-fold8", "order": 16, "brand": "samsung", "name": "Galaxy Fold8", "form": "fold", "display": "8.0\" + 6.5\" AMOLED", "chip": "Snapdragon 8 Elite Gen 5", "camera": "200 MP", "battery": "4400 mAh", "ram": "12 GB", "desc": "Pliabil ușor, de doar 215 g, cu balama fără spațiu la închidere. Galaxy AI traduce apeluri și rezumă documente direct pe telefon.", "badge": "Nou", "verified": true, "variants": [{"storage": "256 GB", "price": 34499}, {"storage": "512 GB", "price": 37999}, {"storage": "1 TB", "price": 44999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-flip8", "order": 17, "brand": "samsung", "name": "Galaxy Flip8", "form": "flip", "display": "6.9\" + 4.1\" AMOLED", "chip": "Exynos 2600", "camera": "50 MP", "battery": "4300 mAh", "ram": "12 GB", "desc": "Se pliază la jumătate și încape în orice buzunar. Ecranul exterior de 4,1 inci rulează aplicații complete fără să deschizi telefonul.", "badge": "Nou", "verified": true, "variants": [{"storage": "256 GB", "price": 25499}, {"storage": "512 GB", "price": 29999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-fold-7", "order": 18, "brand": "samsung", "name": "Galaxy Fold7", "form": "fold", "display": "8.0\" + 6.5\" AMOLED", "chip": "Snapdragon 8 Elite", "camera": "200 MP", "battery": "4400 mAh", "ram": "12 GB", "desc": "Grosime de 8,9 mm închis, cât un telefon obișnuit. Ecranul mare e perfect pentru filme, e-mailuri și editare foto.", "badge": null, "verified": false, "variants": [{"storage": "256 GB", "price": 28999}, {"storage": "512 GB", "price": 31999}, {"storage": "1 TB", "price": 37999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-fold-5", "order": 19, "brand": "samsung", "name": "Galaxy Fold5", "form": "fold", "display": "7.6\" + 6.2\" AMOLED", "chip": "Snapdragon 8 Gen 2", "camera": "50 MP", "battery": "4400 mAh", "ram": "12 GB", "desc": "Pliabil verificat în timp, cu suport pentru S Pen și balama Flex. Acum la jumătate din prețul de lansare.", "badge": null, "verified": false, "variants": [{"storage": "512 GB", "price": 20999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-s26-ultra", "order": 20, "brand": "samsung", "name": "Galaxy S26 Ultra", "form": "slab", "display": "6.9\" AMOLED 120 Hz", "chip": "Snapdragon 8 Elite Gen 5", "camera": "200 MP", "battery": "5000 mAh", "ram": "12 GB", "desc": "S Pen integrat, ecran care ascunde ce e pe el de privirile din lateral și cameră de 200 MP cu zoom 100×. Cel mai complet Galaxy.", "badge": "Nou", "verified": true, "variants": [{"storage": "256 GB", "price": 30999}, {"storage": "512 GB", "price": 33899}, {"storage": "1 TB", "price": 41599}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-s26-plus", "order": 21, "brand": "samsung", "name": "Galaxy S26+", "form": "slab", "display": "6.7\" AMOLED 120 Hz", "chip": "Exynos 2600", "camera": "50 MP", "battery": "4900 mAh", "ram": "12 GB", "desc": "Ecran mare QHD+ și încărcare de 45 W. Toate funcțiile Galaxy AI fără prețul unui Ultra.", "badge": null, "verified": true, "variants": [{"storage": "256 GB", "price": 22799}, {"storage": "512 GB", "price": 27399}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-s26", "order": 22, "brand": "samsung", "name": "Galaxy S26", "form": "slab", "display": "6.3\" AMOLED 120 Hz", "chip": "Exynos 2600", "camera": "50 MP", "battery": "4300 mAh", "ram": "12 GB", "desc": "Flagship compact care se folosește ușor cu o mână. Șapte ani de actualizări Android garantate.", "badge": null, "verified": true, "variants": [{"storage": "256 GB", "price": 21499}, {"storage": "512 GB", "price": 26199}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-s26-fe", "order": 23, "brand": "samsung", "name": "Galaxy S26 FE", "form": "slab", "display": "6.7\" AMOLED 120 Hz", "chip": "Exynos 2500", "camera": "50 MP", "battery": "4900 mAh", "ram": "8 GB", "desc": "Experiența seriei S la preț mai mic: ecran mare, cameră cu teleobiectiv 3× și rezistență IP68.", "badge": null, "verified": false, "variants": [{"storage": "128 GB", "price": 11999}, {"storage": "256 GB", "price": 12999}, {"storage": "512 GB", "price": 14999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-s25-ultra", "order": 24, "brand": "samsung", "name": "Galaxy S25 Ultra", "form": "slab", "display": "6.9\" AMOLED 120 Hz", "chip": "Snapdragon 8 Elite", "camera": "200 MP", "battery": "5000 mAh", "ram": "12 GB", "desc": "Rame din titan, S Pen și cameră ultra-wide de 50 MP. Un Ultra de anul trecut la preț redus.", "badge": null, "verified": true, "variants": [{"storage": "256 GB", "price": 22099}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-s25-edge", "order": 25, "brand": "samsung", "name": "Galaxy S25 Edge", "form": "slab", "display": "6.7\" AMOLED 120 Hz", "chip": "Snapdragon 8 Elite", "camera": "200 MP", "battery": "3900 mAh", "ram": "12 GB", "desc": "Doar 5,8 mm grosime și 163 g, dar cu cameră de 200 MP. Pentru cine vrea un telefon mare și foarte ușor.", "badge": null, "verified": false, "variants": [{"storage": "512 GB", "price": 18999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-s25-plus", "order": 26, "brand": "samsung", "name": "Galaxy S25+", "form": "slab", "display": "6.7\" AMOLED 120 Hz", "chip": "Snapdragon 8 Elite", "camera": "50 MP", "battery": "4900 mAh", "ram": "12 GB", "desc": "Ecran QHD+ luminos și încărcare rapidă de 45 W. Echilibrul ideal între dimensiune și autonomie.", "badge": null, "verified": true, "variants": [{"storage": "256 GB", "price": 20599}, {"storage": "512 GB", "price": 22399}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-s25", "order": 27, "brand": "samsung", "name": "Galaxy S25", "form": "slab", "display": "6.2\" AMOLED 120 Hz", "chip": "Snapdragon 8 Elite", "camera": "50 MP", "battery": "4000 mAh", "ram": "12 GB", "desc": "Compact, ușor și foarte rapid. Galaxy AI și camera cu zoom 3× într-un telefon de buzunar.", "badge": null, "verified": true, "variants": [{"storage": "256 GB", "price": 22199}, {"storage": "512 GB", "price": 26699}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-s25-fe", "order": 28, "brand": "samsung", "name": "Galaxy S25 FE", "form": "slab", "display": "6.7\" AMOLED 120 Hz", "chip": "Exynos 2400", "camera": "50 MP", "battery": "4900 mAh", "ram": "8 GB", "desc": "Fan Edition: funcțiile seriei S la un preț accesibil, cu IP68 și 7 ani de actualizări.", "badge": null, "verified": true, "variants": [{"storage": "512 GB", "price": 16499}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-s24-plus", "order": 29, "brand": "samsung", "name": "Galaxy S24+", "form": "slab", "display": "6.7\" AMOLED 120 Hz", "chip": "Exynos 2400", "camera": "50 MP", "battery": "4900 mAh", "ram": "12 GB", "desc": "Ecran QHD+, 12 GB RAM și 512 GB spațiu. Un flagship complet la preț de mijloc.", "badge": null, "verified": false, "variants": [{"storage": "512 GB", "price": 14999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-s22-ultra", "order": 30, "brand": "samsung", "name": "Galaxy S22 Ultra", "form": "slab", "display": "6.8\" AMOLED 120 Hz", "chip": "Snapdragon 8 Gen 1", "camera": "108 MP", "battery": "5000 mAh", "ram": "8 GB", "desc": "Primul Galaxy S cu S Pen integrat. Zoom optic 10× și ecran curbat mare.", "badge": null, "verified": false, "variants": [{"storage": "128 GB", "price": 10999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-a57", "order": 31, "brand": "samsung", "name": "Galaxy A57", "form": "slab", "display": "6.7\" AMOLED 120 Hz", "chip": "Exynos 1680", "camera": "50 MP", "battery": "5000 mAh", "ram": "8 GB", "desc": "Rame metalice, sticlă Gorilla Glass Victus+ și IP67. Cel mai premium model din seria A.", "badge": "Nou", "verified": false, "variants": [{"storage": "128 GB", "price": 9499}, {"storage": "256 GB", "price": 10299}, {"storage": "512 GB", "price": 11499}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-a56", "order": 32, "brand": "samsung", "name": "Galaxy A56", "form": "slab", "display": "6.7\" AMOLED 120 Hz", "chip": "Exynos 1580", "camera": "50 MP", "battery": "5000 mAh", "ram": "8 GB", "desc": "Încărcare de 45 W, rame din aluminiu și 6 ani de actualizări. Mid-range care arată ca un flagship.", "badge": null, "verified": true, "variants": [{"storage": "128 GB", "price": 8699}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-a53", "order": 33, "brand": "samsung", "name": "Galaxy A53", "form": "slab", "display": "6.5\" AMOLED 120 Hz", "chip": "Exynos 1280", "camera": "64 MP", "battery": "5000 mAh", "ram": "6 GB", "desc": "Ecran fluid de 120 Hz, patru camere și rezistență IP67 la un preț foarte bun.", "badge": null, "verified": false, "variants": [{"storage": "128 GB", "price": 6499}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-a37", "order": 34, "brand": "samsung", "name": "Galaxy A37", "form": "slab", "display": "6.7\" AMOLED 120 Hz", "chip": "Exynos 1580", "camera": "50 MP", "battery": "5000 mAh", "ram": "8 GB", "desc": "IP68, Gorilla Glass și baterie care ține două zile la utilizare obișnuită. Model nou de mijloc.", "badge": "Nou", "verified": false, "variants": [{"storage": "128 GB", "price": 7299}, {"storage": "256 GB", "price": 7999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-a36", "order": 35, "brand": "samsung", "name": "Galaxy A36", "form": "slab", "display": "6.7\" AMOLED 120 Hz", "chip": "Snapdragon 6 Gen 3", "camera": "50 MP", "battery": "5000 mAh", "ram": "8 GB", "desc": "Corp subțire de 7,4 mm, ecran mare și încărcare de 45 W. Funcții Galaxy AI și în gama medie.", "badge": null, "verified": true, "variants": [{"storage": "128 GB", "price": 6999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-a34", "order": 36, "brand": "samsung", "name": "Galaxy A34", "form": "slab", "display": "6.6\" AMOLED 120 Hz", "chip": "Dimensity 1080", "camera": "48 MP", "battery": "5000 mAh", "ram": "6 GB", "desc": "Spate cu efect irizat care își schimbă nuanța în lumină. Ecran de 120 Hz și IP67.", "badge": null, "verified": false, "variants": [{"storage": "128 GB", "price": 5999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-a33", "order": 37, "brand": "samsung", "name": "Galaxy A33", "form": "slab", "display": "6.4\" AMOLED 90 Hz", "chip": "Exynos 1280", "camera": "48 MP", "battery": "5000 mAh", "ram": "6 GB", "desc": "Telefon compact, rezistent la apă IP67, cu cameră stabilizată optic. Simplu și de încredere.", "badge": null, "verified": false, "variants": [{"storage": "128 GB", "price": 5499}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-a26", "order": 38, "brand": "samsung", "name": "Galaxy A26", "form": "slab", "display": "6.7\" AMOLED 120 Hz", "chip": "Exynos 1380", "camera": "50 MP", "battery": "5000 mAh", "ram": "6 GB", "desc": "Ecran AMOLED mare, IP67 și 6 ani de actualizări la un preț mic.", "badge": null, "verified": true, "variants": [{"storage": "128 GB", "price": 6399}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-a18", "order": 39, "brand": "samsung", "name": "Galaxy A18", "form": "slab", "display": "6.7\" PLS LCD 90 Hz", "chip": "Helio G99", "camera": "50 MP", "battery": "5000 mAh", "ram": "4 GB", "desc": "Cel mai accesibil Galaxy nou, cu ecran mare și baterie de 5000 mAh. Potrivit pentru apeluri, mesaje și rețele sociale.", "badge": null, "verified": false, "variants": [{"storage": "128 GB", "price": 3799}, {"storage": "256 GB", "price": 4199}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-a17", "order": 40, "brand": "samsung", "name": "Galaxy A17", "form": "slab", "display": "6.7\" AMOLED 90 Hz", "chip": "Exynos 1330", "camera": "50 MP", "battery": "5000 mAh", "ram": "6 GB", "desc": "Ecran AMOLED, cameră cu stabilizare optică și 256 GB spațiu. Mult telefon pentru bani puțini.", "badge": null, "verified": true, "variants": [{"storage": "128 GB", "price": 5899}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-a73", "order": 41, "brand": "samsung", "name": "Galaxy A73", "form": "slab", "display": "6.7\" AMOLED 120 Hz", "chip": "Snapdragon 778G", "camera": "108 MP", "battery": "5000 mAh", "ram": "8 GB", "desc": "Cameră de 108 MP și procesor Snapdragon puternic. Ecran mare și fluid.", "badge": null, "verified": false, "variants": [{"storage": "256 GB", "price": 7499}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "samsung-galaxy-m33", "order": 42, "brand": "samsung", "name": "Galaxy M33", "form": "slab", "display": "6.6\" PLS LCD 120 Hz", "chip": "Exynos 1280", "camera": "50 MP", "battery": "6000 mAh", "ram": "6 GB", "desc": "Baterie uriașă de 6000 mAh care ține două zile. Ecran de 120 Hz și 5G.", "badge": null, "verified": false, "variants": [{"storage": "128 GB", "price": 4999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-17t-pro", "order": 43, "brand": "xiaomi", "name": "Xiaomi 17T Pro", "form": "slab", "display": "6.83\" AMOLED 144 Hz", "chip": "Dimensity 9500", "camera": "50 MP Leica", "battery": "7000 mAh", "ram": "12 GB", "desc": "Optică Leica, baterie de 7000 mAh și încărcare de 100 W. Un flagship care ține două zile.", "badge": "Nou", "verified": true, "variants": [{"storage": "512 GB", "price": 19599}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-17", "order": 44, "brand": "xiaomi", "name": "Xiaomi 17", "form": "slab", "display": "6.3\" AMOLED 120 Hz", "chip": "Snapdragon 8 Elite Gen 5", "camera": "50 MP Leica", "battery": "7000 mAh", "ram": "12 GB", "desc": "Compact, dar cu baterie de 7000 mAh. Trei camere Leica de 50 MP și performanță de top.", "badge": "Nou", "verified": false, "variants": [{"storage": "512 GB", "price": 18999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-15-ultra", "order": 45, "brand": "xiaomi", "name": "Xiaomi 15 Ultra", "form": "slab", "display": "6.73\" AMOLED 120 Hz", "chip": "Snapdragon 8 Elite", "camera": "50 MP Leica ×4", "battery": "5410 mAh", "ram": "16 GB", "desc": "Patru camere Leica, inclusiv periscop de 200 MP. Un aparat foto profesionist care face și apeluri.", "badge": null, "verified": true, "variants": [{"storage": "512 GB", "price": 23499}, {"storage": "1 TB", "price": 26999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-15t-pro", "order": 46, "brand": "xiaomi", "name": "Xiaomi 15T Pro", "form": "slab", "display": "6.83\" AMOLED 144 Hz", "chip": "Dimensity 9400+", "camera": "50 MP Leica", "battery": "5500 mAh", "ram": "12 GB", "desc": "Teleobiectiv Leica 5×, ecran de 144 Hz și încărcare de 90 W. Mult flagship pentru preț.", "badge": null, "verified": false, "variants": [{"storage": "512 GB", "price": 14999}, {"storage": "1 TB", "price": 16999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-redmi-note-17-pro-max", "order": 47, "brand": "xiaomi", "name": "Redmi Note 17 Pro Max", "form": "slab", "display": "6.83\" AMOLED 120 Hz", "chip": "Snapdragon 7s Gen 4", "camera": "200 MP", "battery": "7500 mAh", "ram": "12 GB", "desc": "Baterie de 7500 mAh, cameră de 200 MP și protecție IP69K. Cel mai complet Redmi.", "badge": "Nou", "verified": false, "variants": [{"storage": "256 GB", "price": 10499}, {"storage": "512 GB", "price": 11999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-redmi-note-17-pro", "order": 48, "brand": "xiaomi", "name": "Redmi Note 17 Pro", "form": "slab", "display": "6.67\" AMOLED 120 Hz", "chip": "Dimensity 7400 Ultra", "camera": "200 MP", "battery": "6500 mAh", "ram": "8 GB", "desc": "Cameră de 200 MP și ecran AMOLED foarte luminos. Rezistență IP68 și Gorilla Glass.", "badge": "Nou", "verified": false, "variants": [{"storage": "256 GB", "price": 8999}, {"storage": "512 GB", "price": 9999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-redmi-note-15-4g", "order": 49, "brand": "xiaomi", "name": "Redmi Note 15 4G", "form": "slab", "display": "6.77\" AMOLED 120 Hz", "chip": "Helio G100 Ultra", "camera": "108 MP", "battery": "6000 mAh", "ram": "8 GB", "desc": "Ecran mare AMOLED și baterie de 6000 mAh. Cameră de 108 MP pentru poze clare la lumina zilei.", "badge": null, "verified": false, "variants": [{"storage": "128 GB", "price": 5299}, {"storage": "256 GB", "price": 5999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-redmi-note-14-pro-5g", "order": 50, "brand": "xiaomi", "name": "Redmi Note 14 Pro 5G", "form": "slab", "display": "6.67\" AMOLED 120 Hz", "chip": "Dimensity 7300 Ultra", "camera": "200 MP", "battery": "5110 mAh", "ram": "12 GB", "desc": "Cameră de 200 MP cu stabilizare optică și IP68. 512 GB spațiu pentru tot.", "badge": null, "verified": false, "variants": [{"storage": "512 GB", "price": 7999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-redmi-note-14-5g", "order": 51, "brand": "xiaomi", "name": "Redmi Note 14 5G", "form": "slab", "display": "6.67\" AMOLED 120 Hz", "chip": "Dimensity 7025 Ultra", "camera": "108 MP", "battery": "5110 mAh", "ram": "8 GB", "desc": "5G, ecran AMOLED de 120 Hz și încărcare de 45 W la un preț corect.", "badge": null, "verified": false, "variants": [{"storage": "256 GB", "price": 5999}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-redmi-note-14-4g", "order": 52, "brand": "xiaomi", "name": "Redmi Note 14 4G", "form": "slab", "display": "6.67\" AMOLED 120 Hz", "chip": "Helio G99 Ultra", "camera": "108 MP", "battery": "5500 mAh", "ram": "6 GB", "desc": "Ecran AMOLED luminos și cameră de 108 MP. Unul dintre cele mai vândute Redmi.", "badge": null, "verified": true, "variants": [{"storage": "128 GB", "price": 4799}, {"storage": "256 GB", "price": 5599}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-redmi-15", "order": 53, "brand": "xiaomi", "name": "Redmi 15", "form": "slab", "display": "6.9\" LCD 144 Hz", "chip": "Snapdragon 6s Gen 3", "camera": "50 MP", "battery": "7000 mAh", "ram": "6 GB", "desc": "Ecran uriaș de 6,9 inci și baterie de 7000 mAh. Pentru filme și jocuri fără grija încărcătorului.", "badge": null, "verified": true, "variants": [{"storage": "128 GB", "price": 4699}, {"storage": "256 GB", "price": 5399}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-redmi-10-2022", "order": 54, "brand": "xiaomi", "name": "Redmi 10 2022", "form": "slab", "display": "6.5\" IPS 90 Hz", "chip": "Helio G88", "camera": "50 MP", "battery": "5000 mAh", "ram": "4 GB", "desc": "Telefon simplu și fiabil, cu NFC și cameră de 50 MP. Bun pentru prima achiziție.", "badge": null, "verified": false, "variants": [{"storage": "128 GB", "price": 3799}], "photos": 5, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-redmi-10c", "order": 55, "brand": "xiaomi", "name": "Redmi 10C", "form": "slab", "display": "6.71\" IPS", "chip": "Snapdragon 680", "camera": "50 MP", "battery": "5000 mAh", "ram": "4 GB", "desc": "Ecran mare și baterie de 5000 mAh la preț mic. Perfect ca telefon de rezervă sau pentru copii.", "badge": null, "verified": false, "variants": [{"storage": "64 GB", "price": 3199}], "photos": 4, "colors": [{"id": "orig", "name": "Original", "hex": null}]}, {"id": "xiaomi-redmi-10a", "order": 56, "brand": "xiaomi", "name": "Redmi 10A", "form": "slab", "display": "6.53\" IPS", "chip": "Helio G25", "camera": "13 MP", "battery": "5000 mAh", "ram": "3 GB", "desc": "Cel mai accesibil smartphone din magazin. Apeluri, WhatsApp și YouTube fără probleme.", "badge": null, "verified": false, "variants": [{"storage": "64 GB", "price": 2899}], "photos": 4, "colors": [{"id": "orig", "name": "Original", "hex": null}]}];
+const BRANDS = {apple:'Apple', samsung:'Samsung', xiaomi:'Xiaomi'};
+const SERIES = p => {
+  const n = p.name;
+  if (p.brand==='apple') { const m = n.match(/iPhone (\d+|Air|Duo)/); return m ? (isNaN(m[1]) ? 'iPhone '+m[1] : 'iPhone '+m[1]) : 'iPhone'; }
+  if (p.brand==='samsung') { if (/Fold|Flip/.test(n)) return 'Galaxy Z · pliabile'; if (/ S\d/.test(n)) return 'Galaxy S'; return 'Galaxy A și M'; }
+  if (/Redmi Note/.test(n)) return 'Redmi Note'; if (/Redmi/.test(n)) return 'Redmi'; return 'Xiaomi flagship';
+};
+const fmt = n => n.toLocaleString('ro-RO').replace(/\./g,' ') + ' lei';
+const state = { brand:'all', mem:'all', sort:'model', q:'', sel:{} };
+const ls = { get(k,d){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d }catch(e){ return d } }, set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)) }catch(e){} } };
+let cart = ls.get('orbita-cart', []);
+
+const NO_ORIG = p => false;
+function sel(p){ return state.sel[p.id] || (state.sel[p.id] = {v:0, c:NO_ORIG(p)?1:0, img:0}); }
+function ph(p, img, c, cls){ const n=p.photos; const pos = n>1 ? img/(n-1)*100 : 0;
+  return `<span class="ph ${cls||''}" role="img" aria-label="${p.name}" style="background-image:url('img/${p.id}_${c}.webp');background-size:${n*100}% 100%;background-position:${pos}% 0"></span>`; }
+function tint(p,c){ const h=p.colors[c]&&p.colors[c].hex; if(!h) return ''; const n=parseInt(h.slice(1),16), r=n>>16,g=n>>8&255,b=n&255;
+  const mix=(a,k)=>`rgb(${Math.round(r*a+255*(1-a))},${Math.round(g*a+255*(1-a))},${Math.round(b*a+255*(1-a))})`; return `--tint:${mix(.32)};--tint2:${mix(.08)}`; }
+function price(p){ return p.variants[sel(p).v].price; }
+
+function renderBrands(){
+  const counts = {all:DATA.length}; DATA.forEach(p=>counts[p.brand]=(counts[p.brand]||0)+1);
+  const el = document.getElementById('brands'); el.innerHTML='';
+  [['all','Toate telefoanele'],['apple','Apple'],['samsung','Samsung'],['xiaomi','Xiaomi']].forEach(([k,l])=>{
+    const b = document.createElement('button'); b.className='brand'; b.dataset.b=k; b.setAttribute('aria-pressed', state.brand===k);
+    b.innerHTML = `<span class="n">${l}</span><span class="c">${counts[k]||0} modele</span>`;
+    b.onclick = ()=>{ state.brand=k; state.mem='all'; state.q=''; const q=document.getElementById('q'); if(q) q.value=''; renderBrands(); renderMem(); render(); const t=document.querySelector('.toolbar'); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); };
+    el.appendChild(b);
+  });
+  const side = document.getElementById('side'); if (!side) return; side.innerHTML='';
+  [['apple','Apple'],['samsung','Samsung'],['xiaomi','Xiaomi']].forEach(([k,l])=>{
+    const b = document.createElement('button'); b.className='sbtn'; b.dataset.b=k; b.setAttribute('aria-pressed', state.brand===k);
+    b.innerHTML = `<span>${l}</span><small>${counts[k]||0}</small>`;
+    b.onclick = ()=>{ state.brand = state.brand===k ? 'all' : k; renderBrands(); render(); document.getElementById('list').scrollIntoView({behavior:'smooth',block:'start'}); };
+    side.appendChild(b);
+  });
+}
+function renderMem(){
+  const set = new Set(); DATA.forEach(p=>p.variants.forEach(v=>set.add(v.storage)));
+  const order = s => parseInt(s) * (s.includes('TB')?1024:1);
+  const el = document.getElementById('mem'); el.innerHTML='';
+  ['all', ...[...set].sort((a,b)=>order(a)-order(b))].forEach(m=>{
+    const b=document.createElement('button'); b.className='chip'; b.textContent = m==='all'?'Toate':m; b.setAttribute('aria-pressed', state.mem===m);
+    b.onclick=()=>{ state.mem=m; renderMem(); render(); }; el.appendChild(b);
+  });
+}
+function filtered(){
+  const q = state.q.trim().toLowerCase();
+  let list = DATA.filter(p => (state.brand==='all'||p.brand===state.brand)
+    && (state.mem==='all'||p.variants.some(v=>v.storage===state.mem))
+    && (!q || (BRANDS[p.brand]+' '+p.name).toLowerCase().includes(q)));
+  list.forEach(p=>{ if(state.mem!=='all'){ const i=p.variants.findIndex(v=>v.storage===state.mem); if(i>=0) sel(p).v=i; } });
+  const bo = {apple:0,samsung:1,xiaomi:2};
+  if (state.sort==='model') list.sort((a,b)=> bo[a.brand]-bo[b.brand] || a.order-b.order);
+  if (state.sort==='old') list.sort((a,b)=> bo[a.brand]-bo[b.brand] || b.order-a.order);
+  if (state.sort==='asc') list.sort((a,b)=> price(a)-price(b));
+  if (state.sort==='desc') list.sort((a,b)=> price(b)-price(a));
+  return list;
+}
+function render(){
+  const list = filtered();
+  document.getElementById('count').textContent = list.length + ' modele';
+  const root = document.getElementById('list'); root.innerHTML='';
+  if (!list.length){ root.innerHTML='<p class="empty">Niciun model nu se potrivește. Încearcă alt cuvânt sau altă memorie.</p>'; return; }
+  const grouped = state.sort==='model'||state.sort==='old';
+  let groups = [];
+  if (grouped){ list.forEach(p=>{ const g=BRANDS[p.brand]+' · '+SERIES(p); let last=groups[groups.length-1]; if(!last||last.t!==g) groups.push(last={t:g,b:BRANDS[p.brand],s:SERIES(p),items:[]}); last.items.push(p); }); }
+  else groups=[{t:'',items:list}];
+  groups.forEach(g=>{
+    const sec=document.createElement('section'); sec.className='group';
+    const GC={Apple:'var(--coral)',Samsung:'#2E6BFF',Xiaomi:'var(--amber)'}; if (g.b) sec.style.setProperty('--gc', GC[g.b]);
+    if (g.t) sec.innerHTML = `<h2>${g.s}<small>${g.b} · ${g.items.length} ${g.items.length===1?'model':'modele'}</small></h2>`;
+    const grid=document.createElement('div'); grid.className='grid';
+    g.items.forEach(p=>grid.appendChild(card(p)));
+    sec.appendChild(grid); root.appendChild(sec);
+  });
+}
+function swatches(p, onPick){
+  const s = sel(p); const wrap=document.createElement('div'); wrap.className='swatches';
+  if (!p.photos || p.colors.length < 2) return wrap;
+  p.colors.forEach((c,i)=>{
+    if (i===0 && NO_ORIG(p)) return;
+    const b=document.createElement('button'); b.className='sw'+(c.hex?'':' orig'); if(c.hex) b.style.background=c.hex;
+    b.title=c.name; b.setAttribute('aria-label','Culoare '+c.name); b.setAttribute('aria-pressed', s.c===i);
+    b.onclick=e=>{ e.stopPropagation(); s.c=i; onPick(); }; wrap.appendChild(b);
+  });
+  const n=document.createElement('span'); n.className='swname'; n.textContent=p.colors[s.c].name; wrap.appendChild(n);
+  return wrap;
+}
+function card(p){
+  const s=sel(p); const el=document.createElement('article'); el.className='card';
+  const stage = p.photos ? ph(p,0,s.c) : `<div class="nophoto"><b>${BRANDS[p.brand]}</b>Foto în curând</div>`;
+  el.innerHTML = `<button class="stage" style="${tint(p,s.c)}" aria-label="Detalii ${p.name}">${p.badge?`<span class="badge">${p.badge}</span>`:''}${stage}</button>
+  <div class="body"><div class="sw-slot"></div>
+  <h3 class="name">${BRANDS[p.brand]==='Apple'?'Apple ':BRANDS[p.brand]==='Samsung'?'Samsung ':''}${p.name}</h3>
+  <div class="spec">${p.display} · ${p.camera} · ${p.ram} RAM</div>
+  <p class="desc">${p.desc}</p>
+  <div class="stor">${p.variants.map((v,i)=>`<button class="st" data-i="${i}" aria-pressed="${s.v===i}">${v.storage}</button>`).join('')}</div>
+  <div class="buy"><div><div class="price">${fmt(price(p))}</div><div class="rate">sau ${fmt(Math.ceil(price(p)/12))}/lună</div></div><button class="add">În coș</button></div></div>`;
+  const redraw=()=>{ el.replaceWith(card(p)); };
+  el.querySelector('.sw-slot').replaceWith(swatches(p, redraw));
+  el.querySelectorAll('.st').forEach(b=>b.onclick=()=>{ s.v=+b.dataset.i; redraw(); });
+  el.querySelector('.stage').onclick=()=>openSheet(p);
+  el.querySelector('.name').onclick=()=>openSheet(p);
+  el.querySelector('.add').onclick=()=>addToCart(p);
+  return el;
+}
+const ov=document.getElementById('ov');
+function openSheet(p){
+  const s=sel(p);
+  const draw=()=>{
+    ov.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="${p.name}"><button class="close" aria-label="Închide">✕</button>
+    <div class="gal" style="${tint(p,s.c)}"><div class="main">${p.photos?ph(p,s.img,s.c):`<div class="nophoto"><b>${BRANDS[p.brand]}</b>Foto în curând</div>`}</div>
+    <div class="thumbs">${Array.from({length:p.photos},(_,j)=>`<button data-j="${j}" aria-pressed="${s.img===j}" aria-label="Poza ${j+1}">${ph(p,j,s.c)}</button>`).join('')}</div></div>
+    <div class="info"><span class="eyebrow">${BRANDS[p.brand]} · ${SERIES(p)}</span><h3>${p.name}</h3><p>${p.desc}</p>
+    <div class="sw-slot"></div>
+    <div class="stor">${p.variants.map((v,i)=>`<button class="st" data-i="${i}" aria-pressed="${s.v===i}">${v.storage}</button>`).join('')}</div>
+    <dl class="specs"><dt>Ecran</dt><dd>${p.display}</dd><dt>Procesor</dt><dd>${p.chip}</dd><dt>Cameră</dt><dd>${p.camera}</dd><dt>Baterie</dt><dd>${p.battery}</dd><dt>RAM</dt><dd>${p.ram}</dd><dt>Memorie</dt><dd>${p.variants[s.v].storage}</dd><dt>Garanție</dt><dd>24 luni</dd></dl>
+    <div class="row"><span class="big">${fmt(price(p))}</span><span class="rate">sau ${fmt(Math.ceil(price(p)/12))}/lună, 12 rate fără dobândă</span></div>
+    <div class="row"><button class="cta">Adaugă în coș</button></div></div></div>`;
+    ov.querySelector('.sw-slot').replaceWith(swatches(p, ()=>{draw(); render();}));
+    ov.querySelectorAll('.thumbs button').forEach(b=>b.onclick=()=>{ s.img=+b.dataset.j; draw(); });
+    ov.querySelectorAll('.info .st').forEach(b=>b.onclick=()=>{ s.v=+b.dataset.i; draw(); render(); });
+    ov.querySelector('.close').onclick=closeSheet;
+    ov.querySelector('.cta').onclick=()=>{ addToCart(p); closeSheet(); };
+  };
+  draw(); ov.hidden=false; document.body.style.overflow='hidden';
+}
+function closeSheet(){ ov.hidden=true; ov.innerHTML=''; document.body.style.overflow=''; }
+ov.addEventListener('click',e=>{ if(e.target===ov) closeSheet(); });
+const INFO = {
+ livrare: { t:'Livrare', lead:'Livrăm telefoane în toată Republica Moldova.', h:`
+  <h4>Cost</h4><p>Livrarea este gratuită pentru toate comenzile, indiferent de valoare.</p>
+  <h4>Termene</h4><ul><li><b>Chișinău:</b> în aceeași zi sau a doua zi lucrătoare, pentru comenzile confirmate până la ora 15:00.</li><li><b>Restul țării:</b> 1–3 zile lucrătoare, prin curier.</li><li><b>Ridicare personală:</b> din magazinul din Chișinău, în aceeași zi, după confirmarea comenzii.</li></ul>
+  <h4>Cum se desfășoară</h4><ul><li>După plasarea comenzii, te sunăm la numărul indicat pentru confirmare.</li><li>Curierul te contactează înainte de livrare și stabilește cu tine intervalul orar.</li><li>La primire, verifică coletul în prezența curierului: ambalajul trebuie să fie intact, iar telefonul să corespundă comenzii.</li></ul>
+  <h4>Plata</h4><p>Poți plăti în numerar sau cu cardul la primire. Pentru plata în rate, te contactăm să stabilim detaliile.</p>
+  <h4>Dacă nu ești acasă</h4><p>Curierul te sună și reprogramează livrarea. După două încercări nereușite, comanda se anulează, iar tu poți plasa una nouă oricând.</p>`},
+ retur: { t:'Politica de retur', lead:'Poți returna sau schimba un telefon cumpărat online în 14 zile calendaristice de la primire.', h:`
+  <h4>Condiții pentru retur</h4><ul><li>Telefonul nu a fost folosit și arată ca nou, fără zgârieturi sau urme de utilizare.</li><li>Ambalajul original, sigiliile, accesoriile și documentele sunt complete.</li><li>Telefonul a fost deconectat de la contul tău (Apple ID, cont Google, Mi Account sau Samsung Account).</li><li>Ai bonul sau confirmarea comenzii.</li></ul>
+  <h4>Când nu se acceptă returul</h4><ul><li>Telefonul are urme de folosire, lovituri, zgârieturi sau contact cu lichide.</li><li>Lipsesc piese din set, ambalajul este deteriorat sau sigiliul de fabrică a fost rupt fără motiv tehnic.</li><li>Au trecut mai mult de 14 zile de la primire.</li></ul>
+  <h4>Cum faci un retur</h4><ul><li>Scrie-ne la <b>salutorbita@gmail.com</b>, cu numărul comenzii și motivul returului.</li><li>Stabilim împreună cum aduci telefonul: în magazin sau prin curier.</li><li>Verificăm telefonul în cel mult 3 zile lucrătoare de la primire.</li></ul>
+  <h4>Banii înapoi</h4><p>După verificare, îți returnăm banii în cel mult 14 zile, pe aceeași cale prin care ai plătit, dacă nu stabilim altfel. Termenul exact în care banii ajung pe card depinde de bancă. Dacă preferi, poți alege în loc un alt telefon, plătind sau primind diferența de preț.</p>
+  <h4>Telefon defect la primire</h4><p>Dacă telefonul are un defect de fabrică descoperit la primire, îl înlocuim sau îți returnăm banii, iar transportul îl plătim noi.</p>
+  <div class="note">Drepturile tale de consumator sunt protejate de legislația Republicii Moldova. Pentru informații oficiale: Agenția pentru Protecția Consumatorilor și Supravegherea Pieței, consumator.gov.md.</div>`},
+ garantie: { t:'Condiții de garanție', lead:'Toate telefoanele noi vândute de Orbita au garanție 24 de luni de la data cumpărării.', h:`
+  <h4>Ce acoperă garanția</h4><p>Defectele de fabricație ale telefonului: probleme de placă de bază, ecran care nu funcționează din fabrică, camere, butoane, difuzoare, microfon, porturi și baterie (pentru defecte de fabricație, nu pentru uzura normală a capacității).</p>
+  <h4>Ce nu acoperă garanția</h4><ul><li>Lovituri, căzături, ecran sau carcasă spartă, urme de presiune.</li><li>Contactul cu apă sau alte lichide, chiar dacă telefonul are certificare IP67/IP68.</li><li>Reparații sau deschideri făcute în altă parte decât în service-ul autorizat.</li><li>Modificări de software neoficiale (root, jailbreak, firmware neoficial).</li><li>Uzura normală: zgârieturi, carcasă tocită, scăderea treptată a capacității bateriei.</li><li>Defecte cauzate de încărcătoare sau cabluri neoriginale ori defecte.</li><li>Accesoriile incluse în cutie au garanție de 6 luni.</li></ul>
+  <h4>Cum folosești garanția</h4><ul><li>Scrie-ne la <b>salutorbita@gmail.com</b> și descrie problema.</li><li>Adu telefonul în magazin împreună cu bonul sau certificatul de garanție. Fă înainte o copie a datelor tale.</li><li>Telefonul este trimis la diagnostic în service-ul autorizat. Diagnosticul și reparația durează de obicei până la 14 zile lucrătoare, în funcție de defect și de piese.</li><li>Dacă defectul este acoperit de garanție, reparația este gratuită. Dacă reparația nu este posibilă, înlocuim telefonul sau îți returnăm banii.</li></ul>
+  <h4>Bine de știut</h4><p>Perioada în care telefonul stă în service prelungește garanția cu același număr de zile. Dacă diagnosticul arată că defectul nu este acoperit de garanție, îți spunem costul reparației înainte să facem ceva.</p>`},
+};
+function openInfo(key){
+  const draw=(k)=>{ const d=INFO[k];
+    ov.innerHTML=`<div class="info" role="dialog" aria-modal="true" aria-label="${d.t}"><button class="close" aria-label="Închide">✕</button>
+    <div class="tabs">${Object.keys(INFO).map(x=>`<button data-k="${x}" aria-pressed="${x===k}">${INFO[x].t}</button>`).join('')}</div>
+    <h3>${d.t}</h3><p class="lead">${d.lead}</p>${d.h}</div>`;
+    ov.querySelector('.close').onclick=closeSheet;
+    ov.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{ draw(b.dataset.k); ov.querySelector('.info').scrollTop=0; });
+  };
+  draw(key); ov.hidden=false; document.body.style.overflow='hidden';
+}
+
+function openCallback(){
+  const draw=(done,num)=>{
+    ov.innerHTML=`<div class="cb" role="dialog" aria-modal="true" aria-label="Vă sunăm noi"><button class="close" aria-label="Închide">✕</button>${done?
+      `<div class="ok"><b>Mulțumim!</b><p>Te sunăm în curând la numărul ${num}, în programul de lucru: Lun–Vin 09:00–20:00, Sâm–Dum 09:00–17:00.</p><button class="cta" id="cbDone">Închide</button></div>`:
+      `<h3>Vă sunăm noi</h3><p>Lasă numărul tău de telefon și un consultant Orbita te sună înapoi, gratuit, ca să te ajute să alegi telefonul potrivit.</p>
+      <form id="cbForm" novalidate><label for="cbName">Numele (opțional)</label><input id="cbName" autocomplete="name" placeholder="Ex. Ion">
+      <label for="cbPhone">Numărul de telefon</label><input id="cbPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ex. 069 123 456" required>
+      <div class="err" id="cbErr"></div><button class="cta" type="submit">Sunați-mă</button></form>`}</div>`;
+    ov.querySelector('.close').onclick=closeSheet;
+    if(done){ ov.querySelector('#cbDone').onclick=closeSheet; return; }
+    const f=ov.querySelector('#cbForm'); setTimeout(()=>ov.querySelector('#cbPhone').focus(),50);
+    f.onsubmit=e=>{ e.preventDefault(); const raw=ov.querySelector('#cbPhone').value; let d=raw.replace(/\D/g,'').replace(/^00373/,'0').replace(/^373/,'0'); if(/^[2-9]\d{7}$/.test(d)) d='0'+d;
+      if(!/^0\d{8}$/.test(d)){ ov.querySelector('#cbErr').textContent='Numărul nu e complet. Scrie-l, de exemplu, 069 123 456 sau 69 123 456.'; return; }
+      const nice=d.slice(0,3)+' '+d.slice(3,6)+' '+d.slice(6);
+      try{ const l=JSON.parse(localStorage.getItem('orbita-callbacks')||'[]'); l.push({name:ov.querySelector('#cbName').value.trim(),phone:nice,at:new Date().toISOString()}); localStorage.setItem('orbita-callbacks',JSON.stringify(l)); }catch(_){}
+      draw(true,nice); };
+  };
+  draw(false); ov.hidden=false; document.body.style.overflow='hidden';
+}
+document.getElementById('cbOpen').onclick=openCallback;
+document.querySelectorAll('[data-cb]').forEach(b=>b.onclick=openCallback);
+
+document.querySelectorAll('[data-info]').forEach(b=>b.addEventListener('click',()=>openInfo(b.dataset.info)));
+
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeSheet(); closeCart(); } });
+
+function addToCart(p){
+  const s=sel(p); const key=`${p.id}|${s.v}|${s.c}`;
+  const ex=cart.find(i=>i.key===key);
+  if(ex) ex.q++; else cart.push({key,id:p.id,v:s.v,c:s.c,q:1});
+  saveCart(); toast(`${p.name} ${p.variants[s.v].storage} a fost adăugat în coș`);
+}
+function saveCart(){ ls.set('orbita-cart',cart); document.getElementById('cartCount').textContent=cart.reduce((a,i)=>a+i.q,0); }
+const drawer=document.getElementById('drawer');
+function openCart(){ renderCart(); drawer.hidden=false; }
+function closeCart(){ drawer.hidden=true; }
+document.getElementById('openCart').onclick=openCart;
+document.getElementById('closeCart').onclick=closeCart;
+function renderCart(){
+  const items=document.getElementById('items'), foot=document.getElementById('foot');
+  cart = cart.filter(i=>DATA.find(p=>p.id===i.id));
+  if(!cart.length){ items.innerHTML='<p class="empty">Coșul e gol. Alege un telefon și apasă „În coș”.</p>'; foot.innerHTML=''; return; }
+  let total=0;
+  items.innerHTML = cart.map((i,k)=>{ const p=DATA.find(x=>x.id===i.id); const pr=p.variants[i.v].price; total+=pr*i.q;
+    return `<div class="it">${p.photos?ph(p,0,i.c,"cimg"):'<span></span>'}<div><div class="t">${p.name}</div><div class="s">${p.variants[i.v].storage} · ${p.photos?p.colors[i.c].name:''} · ${fmt(pr)}</div></div>
+    <div class="qty"><button data-k="${k}" data-d="-1" aria-label="Scade">−</button><span>${i.q}</span><button data-k="${k}" data-d="1" aria-label="Adaugă">+</button></div></div>`; }).join('');
+  items.querySelectorAll('.qty button').forEach(b=>b.onclick=()=>{ const it=cart[+b.dataset.k]; it.q+=+b.dataset.d; if(it.q<=0) cart.splice(+b.dataset.k,1); saveCart(); renderCart(); });
+  foot.innerHTML = `<div class="total"><span>Total</span><span>${fmt(total)}</span></div>
+  <form id="order"><input id="oname" required placeholder="Nume și prenume" autocomplete="name"><input id="ophone" required placeholder="Telefon (ex. 069 123 456)" inputmode="tel"><input id="ocity" placeholder="Oraș / adresă de livrare"><button class="cta" type="submit">Trimite comanda</button></form>`;
+  document.getElementById('order').onsubmit=e=>{ e.preventDefault(); const n=document.getElementById('oname').value.split(' ')[0];
+    cart=[]; saveCart(); items.innerHTML=`<p class="empty">Mulțumim, ${n}! Comanda a fost înregistrată în această pagină demonstrativă. Te sunăm pentru confirmare.</p>`; foot.innerHTML=''; };
+}
+let tt; function toast(t){ const el=document.getElementById('toast'); el.textContent=t; el.hidden=false; clearTimeout(tt); tt=setTimeout(()=>el.hidden=true,2200); }
+
+document.getElementById('q').addEventListener('input',e=>{ state.q=e.target.value; render(); });
+document.getElementById('sort').addEventListener('change',e=>{ state.sort=e.target.value; render(); });
+renderBrands(); renderMem(); render(); saveCart();
+(function hero(){ const p=DATA.find(x=>/s26-ultra/.test(x.id))||DATA[0]; const el=document.getElementById('heroPh'); if(!el||!p.photos) return;
+  let c=0; const show=()=>{ document.getElementById('heroPh').outerHTML=ph(p,0,c).replace('class="ph ','id="heroPh" class="ph '); };
+  show(); if (p.colors.length < 2) return; if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  setInterval(()=>{ c = c>=p.colors.length-1 ? 1 : c+1; show(); }, 2200); })();
+</script>
+
+</body>
+</html>
