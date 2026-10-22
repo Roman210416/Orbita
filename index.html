@@ -126,6 +126,7 @@ header.bar .wrap{display:flex;align-items:center;gap:16px;padding-block:12px}
 .thumbs button{width:64px;height:64px;flex:none;border-radius:12px;border:1px solid var(--card-line);background:var(--card);padding:4px}
 .thumbs button[aria-pressed="true"]{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral)}
 .thumbs .ph{width:100%;height:100%}
+.thumbs .tph{display:block;width:100%;height:100%;background-repeat:no-repeat}
 .info{padding:30px 28px;display:flex;flex-direction:column;gap:14px;min-width:0}
 .info h3{font-family:var(--display);font-size:28px;line-height:1.08;margin:0;letter-spacing:-.02em}
 .info .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--coral);font-weight:800}
@@ -394,7 +395,7 @@ function openSheet(p){
   const draw=()=>{
     ov.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="${p.name}"><button class="close" aria-label="Închide">✕</button>
     <div class="gal" style="${tint(p,s.c)}"><div class="main">${p.photos?ph(p,s.img,s.c):`<div class="nophoto"><b>${BRANDS[p.brand]}</b>Foto în curând</div>`}</div>
-    <div class="thumbs">${Array.from({length:p.photos},(_,j)=>`<button data-j="${j}" aria-pressed="${s.img===j}" aria-label="Poza ${j+1}">${ph(p,j,s.c)}</button>`).join('')}</div></div>
+    <div class="thumbs">${Array.from({length:p.photos},(_,j)=>`<button data-j="${j}" aria-pressed="${s.img===j}" aria-label="Poza ${j+1}"><span class="tph" style="background-image:url('img/th/${p.id}_${s.c}.webp');background-size:${p.photos*100}% 100%;background-position:${p.photos>1?j/(p.photos-1)*100:0}% 0"></span></button>`).join('')}</div></div>
     <div class="info"><span class="eyebrow">${BRANDS[p.brand]} · ${SERIES(p)}</span><h3>${p.name}</h3><p>${p.desc}</p>
     <div class="sw-slot"></div>
     <div class="stor">${p.variants.map((v,i)=>`<button class="st" data-i="${i}" aria-pressed="${s.v===i}">${v.storage}</button>`).join('')}</div>
