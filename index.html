@@ -112,10 +112,11 @@ header.bar .wrap{display:flex;align-items:center;gap:16px;padding-block:12px}
 .overlay{position:fixed;inset:0;background:rgba(2,14,12,.7);backdrop-filter:blur(6px);z-index:50;display:grid;place-items:center;padding:16px}
 .sheet{background:var(--card);color:var(--card-ink);border-radius:24px;width:min(1060px,100%);max-height:calc(100dvh - 32px);overflow:auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);position:relative}
 .sheet .close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:0;background:var(--card-ink);color:var(--card);z-index:2;font-size:16px}
-.gal{background:radial-gradient(circle at 50% 40%,var(--tint,#EEF3EF),var(--tint2,#F7F4EC) 80%);padding:24px;display:flex;flex-direction:column;gap:12px}
-.gal .main{aspect-ratio:1/1;display:grid;place-items:center}
+.gal{background:radial-gradient(circle at 50% 40%,var(--tint,#EEF3EF),var(--tint2,#F7F4EC) 80%);padding:20px 24px;display:flex;flex-direction:column;gap:12px}
+.gal .main{aspect-ratio:auto;height:min(calc(100dvh - 200px),480px);min-height:220px;display:grid;place-items:center}
+.gal .main .ph{max-width:100%;aspect-ratio:1/1;height:100%;width:auto!important}
 .gal .main .ph{width:100%;height:100%;filter:drop-shadow(0 20px 26px rgba(0,0,0,.2))}
-.thumbs{display:flex;gap:8px;overflow-x:auto}
+.thumbs{display:flex;gap:8px;overflow-x:auto;justify-content:center;flex:none;padding-bottom:2px}
 .thumbs button{width:64px;height:64px;flex:none;border-radius:12px;border:1px solid var(--card-line);background:var(--card);padding:4px}
 .thumbs button[aria-pressed="true"]{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral)}
 .thumbs .ph{width:100%;height:100%}
