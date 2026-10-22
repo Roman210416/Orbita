@@ -10,6 +10,7 @@
 <meta property="og:type" content="website">
 
 <meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preload" as="image" href="img/hero-520.webp" imagesrcset="img/hero-320.webp 320w, img/hero-520.webp 520w" imagesizes="(max-width: 600px) 72vw, 360px" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;600;800&display=swap" media="print" onload="this.media='all'">
@@ -65,7 +66,7 @@ header.bar .wrap{display:flex;align-items:center;gap:16px;padding-block:12px}
 .heroart{position:relative;aspect-ratio:1/1;max-width:420px;justify-self:center;width:100%}
 .heroart .ring{position:absolute;inset:6%;border-radius:50%;border:2px dashed rgba(255,255,255,.18);animation:spin 40s linear infinite}
 .heroart .ring.r2{inset:20%;border:2px solid rgba(184,240,42,.35);animation-duration:25s;animation-direction:reverse}
-.heroart .ph{position:absolute;inset:8%;filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))}
+.heroart .ph{position:absolute;inset:8%;width:84%;height:84%;object-fit:contain;filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))}
 .brands{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:26px 0 6px}
 .brand{border:0;border-radius:var(--r);padding:16px 18px;text-align:left;display:flex;flex-direction:column;gap:2px;transition:transform .2s,box-shadow .2s;color:#fff;position:relative;overflow:hidden}
 .brand::after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;right:-40px;bottom:-60px;background:rgba(255,255,255,.18)}
@@ -250,7 +251,7 @@ footer b{color:var(--ink);display:block;margin-bottom:4px}
       <p>Apple, Samsung, Xiaomi</p>
       <div class="chipsrow"><span>57 de modele</span><span>Garanție 24 luni</span><span>Rate 0% · 12 luni</span><span>Livrare gratuită</span></div>
     </div>
-    <div class="heroart" aria-hidden="true"><div class="ring"></div><div class="ring r2"></div><span class="ph" id="heroPh"></span></div>
+    <div class="heroart" aria-hidden="true"><div class="ring"></div><div class="ring r2"></div><img class="ph" id="heroPh" src="img/hero-520.webp" srcset="img/hero-320.webp 320w, img/hero-520.webp 520w" sizes="(max-width: 600px) 72vw, 360px" width="520" height="520" alt="" fetchpriority="high" decoding="async"></div>
   </section>
   <div class="brands" id="brands"></div>
   <div class="toolbar">
@@ -501,7 +502,7 @@ document.getElementById('sort').addEventListener('change',e=>{ state.sort=e.targ
 renderBrands(); renderMem(); render(); saveCart();
 (function hero(){ const p=DATA.find(x=>/s26-ultra/.test(x.id))||DATA[0]; const el=document.getElementById('heroPh'); if(!el||!p.photos) return;
   let c=0; const show=()=>{ document.getElementById('heroPh').outerHTML=ph(p,0,c).replace('class="ph ','id="heroPh" class="ph '); };
-  show(); if (p.colors.length < 2) return; if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (p.colors.length < 2) return; if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   setInterval(()=>{ c = c>=p.colors.length-1 ? 1 : c+1; show(); }, 2200); })();
 </script>
 
