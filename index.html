@@ -210,6 +210,18 @@ footer b{color:var(--ink);display:block;margin-bottom:4px}
 .callback p{margin:4px 0 0;color:var(--muted)}
 .callback .cta{background:var(--lime);color:#14200A;box-shadow:none}
 @media (max-width:760px){.cbfab span{display:none}.cbfab{padding:14px}}
+
+/* detail sheet: square corners, buy bar always visible */
+.sheet{border-radius:0!important;height:min(100%,calc(100dvh - 32px));overflow:hidden}
+.sheet .close{border-radius:0}
+.sheet .gal,.sheet .thumbs button,.sheet .cta,.sheet .st{border-radius:0}
+.sheet .info{overflow:auto;padding:24px 26px 0;gap:10px;max-height:calc(100dvh - 32px)}
+.sheet .info h3{font-size:24px}
+.sheet .specs{font-size:13.5px;gap:4px 16px}
+.sheet .buybar{position:sticky;bottom:0;margin-top:auto;background:var(--card);border-top:1px solid var(--card-line);padding:12px 0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sheet .buybar .big{font-size:26px;display:block;line-height:1.1}
+.sheet .buybar .rate{display:block}
+@media (max-width:760px){.sheet{height:auto;overflow:auto}.sheet .info{max-height:none;overflow:visible}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -381,8 +393,7 @@ function openSheet(p){
     <div class="sw-slot"></div>
     <div class="stor">${p.variants.map((v,i)=>`<button class="st" data-i="${i}" aria-pressed="${s.v===i}">${v.storage}</button>`).join('')}</div>
     <dl class="specs"><dt>Ecran</dt><dd>${p.display}</dd><dt>Procesor</dt><dd>${p.chip}</dd><dt>Cameră</dt><dd>${p.camera}</dd><dt>Baterie</dt><dd>${p.battery}</dd><dt>RAM</dt><dd>${p.ram}</dd><dt>Memorie</dt><dd>${p.variants[s.v].storage}</dd><dt>Garanție</dt><dd>24 luni</dd></dl>
-    <div class="row"><span class="big">${fmt(price(p))}</span><span class="rate">sau ${fmt(Math.ceil(price(p)/12))}/lună, 12 rate fără dobândă</span></div>
-    <div class="row"><button class="cta">Adaugă în coș</button></div></div></div>`;
+    <div class="buybar"><div><span class="big">${fmt(price(p))}</span><span class="rate">sau ${fmt(Math.ceil(price(p)/12))}/lună, 12 rate fără dobândă</span></div><button class="cta">Adaugă în coș</button></div></div></div>`;
     ov.querySelector('.sw-slot').replaceWith(swatches(p, ()=>{draw(); render();}));
     ov.querySelectorAll('.thumbs button').forEach(b=>b.onclick=()=>{ s.img=+b.dataset.j; draw(); });
     ov.querySelectorAll('.info .st').forEach(b=>b.onclick=()=>{ s.v=+b.dataset.i; draw(); render(); });
